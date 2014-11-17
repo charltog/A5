@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="TestAll" project="A5" tests="17" started="17" failures="0" errors="0" ignored="0">
+  <testsuite name="cs414.a5.gcharl.TestAll" time="0.0">
+    <testsuite name="cs414.a5.gcharl.EntryGateTest" time="0.0">
+      <testcase name="testRequestEntry" classname="cs414.a5.gcharl.EntryGateTest" time="0.0"/>
+      <testcase name="testCloseEntryGate" classname="cs414.a5.gcharl.EntryGateTest" time="0.0"/>
+      <testcase name="testIncrementTicketCount" classname="cs414.a5.gcharl.EntryGateTest" time="0.0"/>
+      <testcase name="testOpenEntryGate" classname="cs414.a5.gcharl.EntryGateTest" time="0.0"/>
+    </testsuite>
+    <testsuite name="cs414.a5.gcharl.ExitGateTest" time="0.0">
+      <testcase name="testRequestExit" classname="cs414.a5.gcharl.ExitGateTest" time="0.0"/>
+      <testcase name="testCloseExitGate" classname="cs414.a5.gcharl.ExitGateTest" time="0.0"/>
+      <testcase name="testOpenExitGate" classname="cs414.a5.gcharl.ExitGateTest" time="0.0"/>
+    </testsuite>
+    <testsuite name="cs414.a5.gcharl.SaleTest" time="0.0">
+      <testcase name="testGetTotal" classname="cs414.a5.gcharl.SaleTest" time="0.0"/>
+    </testsuite>
+    <testsuite name="cs414.a5.gcharl.TicketTest" time="0.0">
+      <testcase name="testGetEntryTime" classname="cs414.a5.gcharl.TicketTest" time="0.0"/>
+      <testcase name="testGetGarage" classname="cs414.a5.gcharl.TicketTest" time="0.0"/>
+      <testcase name="testIsValid" classname="cs414.a5.gcharl.TicketTest" time="0.0"/>
+      <testcase name="testRetire" classname="cs414.a5.gcharl.TicketTest" time="0.0"/>
+    </testsuite>
+    <testsuite name="cs414.a5.gcharl.SystemLogTest" time="0.0">
+      <testcase name="testAddLogEvent" classname="cs414.a5.gcharl.SystemLogTest" time="0.0"/>
+    </testsuite>
+    <testsuite name="cs414.a5.gcharl.AdministratorTest" time="0.0">
+      <testcase name="testGetPassword" classname="cs414.a5.gcharl.AdministratorTest" time="0.0"/>
+      <testcase name="testGetId" classname="cs414.a5.gcharl.AdministratorTest" time="0.0"/>
+      <testcase name="testAdminLogin" classname="cs414.a5.gcharl.AdministratorTest" time="0.0"/>
+      <testcase name="testIsDone" classname="cs414.a5.gcharl.AdministratorTest" time="0.0"/>
+    </testsuite>
+  </testsuite>
+</testrun>

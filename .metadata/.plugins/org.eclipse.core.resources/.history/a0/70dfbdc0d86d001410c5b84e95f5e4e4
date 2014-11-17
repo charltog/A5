@@ -1,0 +1,126 @@
+package cs414.a5.gcharl;
+
+import java.util.Date;
+import java.util.HashSet;
+
+public class Garage {
+
+	private int Id = 1;
+	private int defaultAdminId = 1;
+	private String defaultAdminPassword = "foo";
+	private EntryGate entryGate;
+	private ExitGate exitGate;
+	private GarageDescription garageDescription;
+	public SystemLog systemLog;
+	public HashSet<Administrator> _administrators;
+	
+	public Garage(int id) {
+		this.Id = id;		
+		systemLog = new SystemLog();
+		entryGate = createEntryGate();
+		exitGate = createExitGate();
+		garageDescription = new GarageDescription();
+		
+		Administrator a = addAdministrator(defaultAdminId);
+		a.setPassword(defaultAdminPassword);
+		_administrators.add(a);
+		
+	}
+
+	private Administrator addAdministrator(int adminId) {
+		Administrator a1 = null;
+		if (!_administrators.contains(a1) && (adminId > 0)) {
+			a1 = new Administrator(adminId, this);	
+			_administrators.add(a1);
+		}
+		return a1;
+	}
+	
+	public Administrator findAdminById(int Id) {
+		Administrator a = null;
+		for (Administrator a1 : _administrators) {
+			if (a1.getId() == Id) {
+				a = a1;
+			}
+		}
+		return a;
+	}
+
+	public SystemLog getSystemLog() {
+		return systemLog;
+	}
+
+	public boolean equals(Object o) {
+		boolean result = false;
+		if (this.Id == ((Garage)o).getId()) {
+			result = true;
+		} else {
+			result = false;
+		}
+		return result;
+	}
+	public int getId() {
+		return this.Id;
+	}
+
+	private EntryGate createEntryGate() {
+		return createEntryGate(this.Id);
+	}
+
+	private EntryGate createEntryGate(int id) {
+		int initialTicketCount = 1;
+		SystemLogEvent event = new SystemLogEvent(this, "Entry Gate Created", EntryGate.class.getName(), this.getDateTime());
+		systemLog.addLogEvent(event);		
+		return new EntryGate(id, initialTicketCount, this);
+	}
+
+	private ExitGate createExitGate() {
+		return createExitGate(this.Id);
+	}
+
+	private ExitGate createExitGate(int id) {
+		SystemLogEvent event = new SystemLogEvent(this, "Exit Gate Created", ExitGate.class.getName(), this.getDateTime());
+		systemLog.addLogEvent(event);
+		return new ExitGate(id, this);
+	}
+	
+	public EntryGate getEntryGate() {
+		return entryGate;
+	}
+
+	public ExitGate getExitGate() {
+		return exitGate;
+	}
+
+	public Date getDateTime() {
+		Date d1 = new Date();
+		return d1;
+	}
+
+	public boolean isGarageAcceptingVehicles() {
+		boolean isAccepting = false;
+		if (garageDescription.getSystemStatus() == SystemStatus.Vacancy) {
+			isAccepting = true;
+		} else {
+			isAccepting = false;
+		}
+		return isAccepting;
+	}
+
+	public void increaseCurrentOccupancyByOne() {
+		SystemLogEvent event = new SystemLogEvent(this, "Increased Occupancy by one", Garage.class.getName(), this.getDateTime());
+		systemLog.addLogEvent(event);
+		garageDescription.increaseCurrentOccupancyByOne();		
+	}
+
+	public double getParkingRate() {
+		return garageDescription.getCurrentParkingRate();
+	}
+
+	public void decreaseCurrentOccupancyByOne() {
+		SystemLogEvent event = new SystemLogEvent(this, "Decreased Occupancy by one", EntryGate.class.getName(), this.getDateTime());
+		systemLog.addLogEvent(event);
+		garageDescription.decreaseCurrentOccupancyByOne();
+	}
+
+}

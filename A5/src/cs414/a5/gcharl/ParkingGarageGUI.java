@@ -40,7 +40,7 @@ public class ParkingGarageGUI extends JFrame {
 	private JTextField adminPassword;
 	private FormOfPayment FOP;
 	
-	private Garage garage = new Garage(101);
+	private Garage _garage = new Garage(101);
 	private int totalAmt = 0;
 	private double payAmt = 0.0;
 	private JTextField paymentAmount;
@@ -48,6 +48,27 @@ public class ParkingGarageGUI extends JFrame {
 	private JTextField exitInformation;
 	private JTextField changeAmount;
 
+	final JTextPane entryGatePane = new JTextPane();
+	final JTextPane vacancyPane = new JTextPane();
+	final JTextPane exitGatePane = new JTextPane();
+
+	final JButton btnGetTicket = new JButton("Get Ticket");
+	
+	final JButton btnEnterGarage = new JButton("Enter Garage");
+	//btnEnterGarage.setEnabled(false);
+	
+	final JButton btnMakePayment = new JButton("Make Payment");
+	//btnMakePayment.setEnabled(false);
+	
+	final JButton btnGetTotal = new JButton("Get Total");
+	//btnGetTotal.setEnabled(false);
+	
+	final JButton btnExitGarage = new JButton("Exit Garage");
+	//btnExitGarage.setEnabled(false);
+	
+	final JRadioButton rdbtnCreditCard = new JRadioButton("Credit Card");
+	final JRadioButton rdbtnCash = new JRadioButton("Cash");
+	
 	/**
 	 * Launch the application.
 	 */
@@ -87,7 +108,7 @@ public class ParkingGarageGUI extends JFrame {
 		gbc_lblEntryGate.gridy = 0;
 		contentPane.add(lblEntryGate, gbc_lblEntryGate);
 		
-		final JTextPane entryGatePane = new JTextPane();
+		//final JTextPane entryGatePane = new JTextPane();
 		entryGatePane.setText("Closed");
 		GridBagConstraints gbc_textPane_1 = new GridBagConstraints();
 		gbc_textPane_1.insets = new Insets(0, 0, 5, 5);
@@ -103,7 +124,7 @@ public class ParkingGarageGUI extends JFrame {
 		gbc_lblVacancy.gridy = 0;
 		contentPane.add(lblVacancy, gbc_lblVacancy);
 		
-		final JTextPane vacancyPane = new JTextPane();
+		//final JTextPane vacancyPane = new JTextPane();
 		GridBagConstraints gbc_vacancyPane = new GridBagConstraints();
 		gbc_vacancyPane.insets = new Insets(0, 0, 5, 0);
 		gbc_vacancyPane.gridx = 3;
@@ -111,7 +132,7 @@ public class ParkingGarageGUI extends JFrame {
 		contentPane.add(vacancyPane, gbc_vacancyPane);
 		vacancyPane.setText("Yes");
 		
-		final JTextPane exitGatePane = new JTextPane();
+		//final JTextPane exitGatePane = new JTextPane();
 		exitGatePane.setEditable(false);
 		exitGatePane.setText("Closed");
 		GridBagConstraints gbc_exitGatePane = new GridBagConstraints();
@@ -121,51 +142,34 @@ public class ParkingGarageGUI extends JFrame {
 		gbc_exitGatePane.gridy = 16;
 		contentPane.add(exitGatePane, gbc_exitGatePane);
 		
-		
-		final JButton btnGetTicket = new JButton("Get Ticket");
-		
-		final JButton btnEnterGarage = new JButton("Enter Garage");
+//		
+//		final JButton btnGetTicket = new JButton("Get Ticket");
+//		
+//		final JButton btnEnterGarage = new JButton("Enter Garage");
 		btnEnterGarage.setEnabled(false);
-		
-		final JButton btnMakePayment = new JButton("Make Payment");
+//		
+//		final JButton btnMakePayment = new JButton("Make Payment");
 		btnMakePayment.setEnabled(false);
-		
-		final JButton btnGetTotal = new JButton("Get Total");
+//		
+//		final JButton btnGetTotal = new JButton("Get Total");
 		btnGetTotal.setEnabled(false);
-		
-		final JButton btnExitGarage = new JButton("Exit Garage");
+//		
+//		final JButton btnExitGarage = new JButton("Exit Garage");
 		btnExitGarage.setEnabled(false);
-		
-		final JRadioButton rdbtnCreditCard = new JRadioButton("Credit Card");
-		final JRadioButton rdbtnCash = new JRadioButton("Cash");
-		
+//		
+//		final JRadioButton rdbtnCreditCard = new JRadioButton("Credit Card");
+//		final JRadioButton rdbtnCash = new JRadioButton("Cash");
+//		
 				
 		btnGetTicket.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				exitInformation.setText("");
-				Ticket t1 = garage.getEntryGate().requestTicket();
-				if (t1 != null) {
-					assignedTicketNumber.setText(t1.toString());
-					entryGatePane.setText("Open");
-					vacancyPane.setText("Yes");			
-					btnEnterGarage.setEnabled(true);
-					btnGetTicket.setEnabled(false);
-				} else {
-					assignedTicketNumber.setText("Sorry, Garage is Full");
-					entryGatePane.setText("Closed");
-					vacancyPane.setText("No");
-				}				
+				pressGetTicket();								
 			}
 		});
 		
 		btnEnterGarage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				exitInformation.setText("");
-				entryGatePane.setText("Closed");		
-				assignedTicketNumber.setText("");
-				garage.getEntryGate().enterGarage();
-				btnEnterGarage.setEnabled(false);
-				btnGetTicket.setEnabled(true);
+				pressEnterGarage();
 			}
 		});
 		
@@ -205,16 +209,7 @@ public class ParkingGarageGUI extends JFrame {
 		exitTicketNum = new JTextField();
 		exitTicketNum.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent arg0) {
-				String testString = exitTicketNum.getText();
-				Ticket t1 = garage.getEntryGate().findTicketByID(testString);
-				//Sale s1 = garage.getExitGate().findSaleByTicketId(t1);
-				if (t1 != null && t1.isValid()) {
-					btnGetTotal.setEnabled(true);	
-					btnExitGarage.setEnabled(true);
-				} else {
-					btnGetTotal.setEnabled(false);
-					btnExitGarage.setEnabled(false);
-				}
+				updateExitTicketNum();
 			}
 		});
 		
@@ -283,24 +278,16 @@ public class ParkingGarageGUI extends JFrame {
 		
 		btnGetTotal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				exitInformation.setText("");
-				String testString = exitTicketNum.getText();
-				Ticket t1 = garage.getEntryGate().findTicketByID(testString);
-				if (t1 == null) {
-					totalText.setText("Ticket not found");
-				} else if (!t1.isValid()) {
-					totalText.setText("Invalid Ticket");
-				} else {
-					Sale s1 = garage.getExitGate().requestExit(t1);
-					//totalText.setText("" + s1.roundedTotal + ".00");
-					String s = String.format("$ %.2f", s1.getTotal());
-					totalText.setText(s);
-					btnMakePayment.setEnabled(true);
-				}
+				pressGetTotal();
 			}
 		});
 		
 		JButton btnLogin = new JButton("Login");
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				pressAdminLogin();
+			}
+		});
 		GridBagConstraints gbc_btnLogin = new GridBagConstraints();
 		gbc_btnLogin.insets = new Insets(0, 0, 5, 0);
 		gbc_btnLogin.gridx = 3;
@@ -367,8 +354,8 @@ public class ParkingGarageGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				exitInformation.setText("");
 				String testString = exitTicketNum.getText();
-				Ticket t1 = garage.getEntryGate().findTicketByID(testString);
-				Sale s1 = garage.getExitGate().findSaleByTicketId(t1);
+				Ticket t1 = _garage.getEntryGate().findTicketByID(testString);
+				Sale s1 = _garage.getExitGate().findSaleByTicketId(t1);
 				try {
 					payAmt = Double.parseDouble(paymentAmount.getText());
 				} 
@@ -378,7 +365,7 @@ public class ParkingGarageGUI extends JFrame {
 				}
 					
 				
-				if (garage.getExitGate().makePayment(s1, payAmt, FOP)) {
+				if (_garage.getExitGate().makePayment(s1, payAmt, FOP)) {
 					totalText.setText("");
 					paymentAmount.setText("");
 					rdbtnCash.setSelected(false);
@@ -391,7 +378,7 @@ public class ParkingGarageGUI extends JFrame {
 					paymentAmount.setText("Payment Failed");
 				}
 				
-				exitGatePane.setText(garage.getExitGate().getStatus().toString());
+				exitGatePane.setText(_garage.getExitGate().getStatus().toString());
 				if (!t1.isValid()) {
 					btnExitGarage.setEnabled(true);
 				}
@@ -435,34 +422,7 @@ public class ParkingGarageGUI extends JFrame {
 		
 		btnExitGarage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				String testString = exitTicketNum.getText();
-				Ticket t1 = garage.getEntryGate().findTicketByID(testString);
-				
-				if (t1 == null) {
-					exitInformation.setText("Invalid Ticket #");
-					btnExitGarage.setEnabled(false);
-				} else if (t1.isValid()) {
-					exitInformation.setText("Pay before exiting please");
-					btnExitGarage.setEnabled(false);
-				} else {
-					Sale s1 = garage.getExitGate().findSaleByTicketId(t1);
-								
-					totalText.setText("");
-					exitTicketNum.setText("");
-					exitInformation.setText("Goodbye");
-					btnMakePayment.setEnabled(false);
-					garage.getExitGate().exitGarage(s1);	
-					btnExitGarage.setEnabled(false);
-					
-				
-				}		
-				if (garage.isGarageAcceptingVehicles()) {
-					vacancyPane.setText("Yes");
-				} else {
-					vacancyPane.setText("No");
-				}	
-				exitGatePane.setText(garage.getExitGate().getStatus().toString());
+				pressExitGarage();
 			}
 		});
 		
@@ -502,6 +462,110 @@ public class ParkingGarageGUI extends JFrame {
 		contentPane.add(lblExitGate, gbc_lblExitGate);
 		
 		
+	}
+
+	protected void pressAdminLogin() {
+		int id = Integer.parseInt(adminID.getText());
+		String pw = adminPassword.getText();
+		if (_garage.administratorLogin(id, pw)) {
+			//displayAdminMenu();
+			//JFrame adminWindow = new JFrame();
+			AdminMenu aMenu = new AdminMenu();
+			aMenu.main(null);
+		}
+	}
+
+	protected void pressGetTotal() {
+		exitInformation.setText("");
+		String testString = exitTicketNum.getText();
+		Ticket t1 = _garage.getEntryGate().findTicketByID(testString);
+		if (t1 == null) {
+			totalText.setText("Ticket not found");
+		} else if (!t1.isValid()) {
+			totalText.setText("Invalid Ticket");
+		} else {
+			Sale s1 = _garage.getExitGate().requestExit(t1);
+			//totalText.setText("" + s1.roundedTotal + ".00");
+			String s = String.format("$ %.2f", s1.getTotal());
+			totalText.setText(s);
+			btnMakePayment.setEnabled(true);			
+		}
+	}
+
+	protected void updateExitTicketNum() {
+		String testString = exitTicketNum.getText();
+		Ticket t1 = _garage.getEntryGate().findTicketByID(testString);
+		//Sale s1 = garage.getExitGate().findSaleByTicketId(t1);
+		if (t1 != null && t1.isValid()) {
+			btnGetTotal.setEnabled(true);	
+			btnExitGarage.setEnabled(true);
+		} else {
+			btnGetTotal.setEnabled(false);
+			btnExitGarage.setEnabled(false);
+		}
+
+	}
+
+	protected void pressEnterGarage() {
+		exitInformation.setText("");
+		entryGatePane.setText("Closed");		
+		assignedTicketNumber.setText("");
+		_garage.getEntryGate().enterGarage();
+		btnEnterGarage.setEnabled(false);
+		btnGetTicket.setEnabled(true);
+		if (_garage.isGarageAcceptingVehicles()) {
+			vacancyPane.setText("Yes");
+		} else {
+			vacancyPane.setText("No");
+		}
+	}
+
+	protected void pressGetTicket() {
+		exitInformation.setText("");
+		Ticket t1 = _garage.getEntryGate().requestTicket();
+		if (t1 != null) {
+			assignedTicketNumber.setText(t1.toString());
+			entryGatePane.setText("Open");
+			vacancyPane.setText("Yes");			
+			btnEnterGarage.setEnabled(true);
+			btnGetTicket.setEnabled(false);
+		} else {
+			assignedTicketNumber.setText("Sorry, Garage is Full");
+			entryGatePane.setText("Closed");
+			//vacancyPane.setText("No");
+		}
+	}
+
+	protected void pressExitGarage() {
+
+		String testString = exitTicketNum.getText();
+		Ticket t1 = _garage.getEntryGate().findTicketByID(testString);
+		
+		if (t1 == null) {
+			exitInformation.setText("Invalid Ticket #");
+			btnExitGarage.setEnabled(false);
+		} else if (t1.isValid()) {
+			exitInformation.setText("Pay before exiting please");
+			btnExitGarage.setEnabled(false);
+		} else {
+			Sale s1 = _garage.getExitGate().findSaleByTicketId(t1);
+						
+			totalText.setText("");
+			exitTicketNum.setText("");
+			exitInformation.setText("Goodbye");
+			btnMakePayment.setEnabled(false);
+			_garage.getExitGate().exitGarage(s1);	
+			btnExitGarage.setEnabled(false);
+			
+		
+		}		
+		if (_garage.isGarageAcceptingVehicles()) {
+			vacancyPane.setText("Yes");
+		} else {
+			vacancyPane.setText("No");
+		}	
+		exitGatePane.setText(_garage.getExitGate().getStatus().toString());
+
 	}
 
 }
