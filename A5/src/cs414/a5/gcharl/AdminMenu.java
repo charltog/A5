@@ -6,22 +6,34 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.GridBagLayout;
+
 import javax.swing.JLabel;
+
 import java.awt.GridBagConstraints;
+
 import javax.swing.JRadioButton;
+
 import java.awt.Insets;
+
+import javax.swing.ButtonModel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JButton;
+
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import javax.swing.ButtonGroup;
+
 public class AdminMenu extends JFrame {
 
 	private JPanel contentPane;
+	private Administrator _administrator;
+	private final ButtonGroup buttonGroup = new ButtonGroup();
 
 	/**
 	 * Launch the application.
@@ -41,9 +53,11 @@ public class AdminMenu extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @param _administrator 
 	 */
-	public AdminMenu() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public AdminMenu(Administrator administrator) {
+		_administrator = administrator;
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 368, 472);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -71,26 +85,42 @@ public class AdminMenu extends JFrame {
 		gbc_panel.gridy = 2;
 		contentPane.add(panel, gbc_panel);
 		
-		JRadioButtonMenuItem rdbtnmntmVieweditGarageSettings = new JRadioButtonMenuItem("View/Edit Garage Settings");
+		final JRadioButtonMenuItem rdbtnmntmVieweditGarageSettings = new JRadioButtonMenuItem("View/Edit Garage Settings");
+		buttonGroup.add(rdbtnmntmVieweditGarageSettings);
 		panel.add(rdbtnmntmVieweditGarageSettings);
 		
-		JRadioButtonMenuItem rdbtnmntmViewSystemLog = new JRadioButtonMenuItem("View System Log");
+		final JRadioButtonMenuItem rdbtnmntmViewSystemLog = new JRadioButtonMenuItem("View System Log");
+		buttonGroup.add(rdbtnmntmViewSystemLog);
 		panel.add(rdbtnmntmViewSystemLog);
 		
-		JRadioButtonMenuItem rdbtnmntmCreateNewEmployee = new JRadioButtonMenuItem("Create New Employee");
+		final JRadioButtonMenuItem rdbtnmntmCreateNewEmployee = new JRadioButtonMenuItem("Create New Employee");
+		buttonGroup.add(rdbtnmntmCreateNewEmployee);
 		panel.add(rdbtnmntmCreateNewEmployee);
 		
-		JRadioButtonMenuItem rdbtnmntmCreateNewAdministrator = new JRadioButtonMenuItem("Create New Administrator");
+		final JRadioButtonMenuItem rdbtnmntmCreateNewAdministrator = new JRadioButtonMenuItem("Create New Administrator");
+		buttonGroup.add(rdbtnmntmCreateNewAdministrator);
 		panel.add(rdbtnmntmCreateNewAdministrator);
 		
-		JRadioButtonMenuItem rdbtnmntmSystemOverride = new JRadioButtonMenuItem("System Override");
+		final JRadioButtonMenuItem rdbtnmntmSystemOverride = new JRadioButtonMenuItem("System Override");
+		buttonGroup.add(rdbtnmntmSystemOverride);
 		panel.add(rdbtnmntmSystemOverride);
 		
 		JButton btnSelect = new JButton("Select");
 		btnSelect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				pressSelect();
+				int choice = 0;
+				if (rdbtnmntmVieweditGarageSettings.isSelected()) {
+					choice = 1;
+				} else if (rdbtnmntmViewSystemLog.isSelected()) {
+					choice = 2;
+				} else if (rdbtnmntmCreateNewEmployee.isSelected()) {
+					choice = 3;
+				} else if (rdbtnmntmCreateNewAdministrator.isSelected()) {
+					choice = 4;
+				} else if (rdbtnmntmSystemOverride.isSelected()) {
+					choice = 5;
+				}
+				pressSelect(choice);
 			}
 		});
 		GridBagConstraints gbc_btnSelect = new GridBagConstraints();
@@ -100,6 +130,11 @@ public class AdminMenu extends JFrame {
 		contentPane.add(btnSelect, gbc_btnSelect);
 		
 		JButton btnLogout = new JButton("Logout");
+		btnLogout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				pressAdminLogout();
+			}
+		});
 		GridBagConstraints gbc_btnLogout = new GridBagConstraints();
 		gbc_btnLogout.insets = new Insets(0, 0, 0, 5);
 		gbc_btnLogout.gridx = 2;
@@ -107,8 +142,24 @@ public class AdminMenu extends JFrame {
 		contentPane.add(btnLogout, gbc_btnLogout);
 	}
 
-	protected void pressSelect() {
+	protected void pressSelect(int choice) {
+		switch (choice) {
 		
+			case 1:		GarageConfigGUI gcgui = new GarageConfigGUI(_administrator._garage);
+						gcgui.setVisible(true);
+						break;
+			case 2: 	//viewSystemLog();
+			case 3: 	//createNewEmployee();
+			case 4: 	//createNewAdministrator();
+			case 5: 	//systemOverride();
+			default: 	//failure
+						break;
+			
+		}
+	}
+
+	protected void pressAdminLogout() {
+		_administrator.setDone(false);
 		
 	}
 

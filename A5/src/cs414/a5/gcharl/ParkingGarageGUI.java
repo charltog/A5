@@ -490,8 +490,9 @@ public class ParkingGarageGUI extends JFrame {
 		if (_garage.administratorLogin(id, pw)) {
 			//displayAdminMenu();
 			//JFrame adminWindow = new JFrame();
-			AdminMenu aMenu = new AdminMenu();
+			AdminMenu aMenu = new AdminMenu(_garage.findAdminById(id));
 			aMenu.setVisible(true);
+			
 			//aMenu.main(null);
 		}
 	}

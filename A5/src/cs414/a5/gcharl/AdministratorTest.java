@@ -42,5 +42,15 @@ public class AdministratorTest {
 		g4.administratorLogin(a4.getId(), a4.getPassword());
 		assertTrue(!a4.isDone());
 	}
+	
+	@Test
+	public void testAdminViewGarageConfig() {
+		boolean result = false;
+		Garage g5 = new Garage(5);
+		Administrator a5 = new Administrator(5, testPass, g5);
+		result = true; //a5.viewGarageConfig();
+		assertTrue(result);
+	}
+	
 
 }

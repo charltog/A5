@@ -2,7 +2,7 @@ package cs414.a5.gcharl;
 
 public class Employee {
 
-	private Garage garage;
+	protected Garage _garage;
 	private int Id = -1;
 	private String password = "";
 	private boolean isSessionActive = false;
@@ -10,7 +10,7 @@ public class Employee {
 	public Employee(int id, String password, Garage g1) {
 		this.Id = id;
 		this.password = password;
-		this.garage = g1;
+		this._garage = g1;
 		this.isSessionActive = false;		
 	}
 
@@ -33,6 +33,7 @@ public class Employee {
 	public void setDone(boolean done) {
 		this.isSessionActive = done;
 	}
+	
 //		
 //	public boolean employeeLogin(int id, String password) {
 //		boolean result = false;

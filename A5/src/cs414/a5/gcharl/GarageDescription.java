@@ -1,13 +1,15 @@
 package cs414.a5.gcharl;
 
+import java.io.IOException;
+
 
 public class GarageDescription {
 	
-	private static int maxOccupancy = 10;
-	private static int buffer = 3;
-	private static double hourlyParkingRate = 2.00;
-	private SystemStatus status = SystemStatus.ShutDown;
-	private int currentOccupancy = 0;
+	public int maxOccupancy = 10;
+	public int buffer = 3;
+	public double hourlyParkingRate = 2.00;
+	public SystemStatus status = SystemStatus.ShutDown;
+	public int currentOccupancy = 0;
 	
 	public SystemStatus getSystemStatus() {
 		calculateSystemStatus();
@@ -20,6 +22,21 @@ public class GarageDescription {
 		} else {
 			status = SystemStatus.NoVacancy;
 		}		
+	}
+	
+	public boolean setConfig(int max, int cur, int buf, double hpr, SystemStatus ss) {
+		boolean result = false;
+		try {
+			this.maxOccupancy = max;
+			this.buffer = buf;
+			this.hourlyParkingRate = hpr;
+			this.currentOccupancy = cur;
+			this.status = ss;
+			result = true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return result;
 	}
 
 	public void increaseCurrentOccupancyByOne() {

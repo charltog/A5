@@ -10,7 +10,7 @@ public class Garage {
 	private String defaultAdminPassword = "foo";
 	private EntryGate entryGate;
 	private ExitGate exitGate;
-	private GarageDescription garageDescription;
+	private GarageDescription _garageDescription;
 	public SystemLog systemLog;
 	public HashSet<Administrator> _administrators = new HashSet<Administrator>();
 	public HashSet<Employee> _employees = new HashSet<Employee>();
@@ -20,7 +20,7 @@ public class Garage {
 		systemLog = new SystemLog();
 		entryGate = createEntryGate();
 		exitGate = createExitGate();
-		garageDescription = new GarageDescription();
+		_garageDescription = new GarageDescription();
 		
 		Administrator a = createAdministrator(defaultAdminId, defaultAdminPassword, this);
 		_administrators.add(a);
@@ -109,7 +109,7 @@ public class Garage {
 
 	public boolean isGarageAcceptingVehicles() {
 		boolean isAccepting = false;
-		if (garageDescription.getSystemStatus() == SystemStatus.Vacancy) {
+		if (_garageDescription.getSystemStatus() == SystemStatus.Vacancy) {
 			isAccepting = true;
 		} else {
 			isAccepting = false;
@@ -120,17 +120,39 @@ public class Garage {
 	public void increaseCurrentOccupancyByOne() {
 		SystemLogEvent event = new SystemLogEvent(this, "Increased Occupancy by one", Garage.class.getName(), this.getDateTime());
 		systemLog.addLogEvent(event);
-		garageDescription.increaseCurrentOccupancyByOne();		
+		_garageDescription.increaseCurrentOccupancyByOne();		
 	}
 
 	public double getParkingRate() {
-		return garageDescription.getCurrentParkingRate();
+		return _garageDescription.getCurrentParkingRate();
 	}
 
 	public void decreaseCurrentOccupancyByOne() {
 		SystemLogEvent event = new SystemLogEvent(this, "Decreased Occupancy by one", EntryGate.class.getName(), this.getDateTime());
 		systemLog.addLogEvent(event);
-		garageDescription.decreaseCurrentOccupancyByOne();
+		_garageDescription.decreaseCurrentOccupancyByOne();
 	}
 
+	public GarageDescription viewConfig() {
+//		GarageDescription gd = new GarageDescription();
+//		gd.setConfig(_garageDescription.maxOccupancy, 
+//						_garageDescription.currentOccupancy,
+//						_garageDescription.buffer,
+//						_garageDescription.hourlyParkingRate,
+//						_garageDescription.status);
+//		return gd;
+		return _garageDescription;
+	}
+
+//	private void displayConfig(int max, int cur, int buf, double hpr, SystemStatus ss) {
+//		GarageConfigGUI gcgui = new GarageConfigGUI(this);
+//		
+		
+//		System.out.println("Maxiumum Occupancy: " + max);
+//		System.out.println("Current Occupancy: " + cur);
+//		System.out.println("Capacity Buffer: " + buf);
+//		System.out.println("Hourly Parking Rate: " + hpr);
+//		System.out.println("System Status: " + ss);		
+//	}
+	
 }
