@@ -29,6 +29,11 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.CaretEvent;
 import java.awt.Color;
 import java.awt.Font;
+import javax.swing.JPopupMenu;
+import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JMenuItem;
 
 public class ParkingGarageGUI extends JFrame {
 
@@ -288,6 +293,21 @@ public class ParkingGarageGUI extends JFrame {
 				pressAdminLogin();
 			}
 		});
+		
+		JPopupMenu popupMenu = new JPopupMenu();
+		addPopup(btnLogin, popupMenu);
+		
+		JMenuItem mntmVieweditGarageSettings = new JMenuItem("View/Edit Garage Settings");
+		popupMenu.add(mntmVieweditGarageSettings);
+		
+		JMenuItem mntmViewSystemLog = new JMenuItem("View System Log");
+		popupMenu.add(mntmViewSystemLog);
+		
+		JMenuItem mntmCreateNewEmployee = new JMenuItem("Create New Employee");
+		popupMenu.add(mntmCreateNewEmployee);
+		
+		JMenuItem mntmCreateNewAdministrator = new JMenuItem("Create New Administrator");
+		popupMenu.add(mntmCreateNewAdministrator);
 		GridBagConstraints gbc_btnLogin = new GridBagConstraints();
 		gbc_btnLogin.insets = new Insets(0, 0, 5, 0);
 		gbc_btnLogin.gridx = 3;
@@ -471,7 +491,8 @@ public class ParkingGarageGUI extends JFrame {
 			//displayAdminMenu();
 			//JFrame adminWindow = new JFrame();
 			AdminMenu aMenu = new AdminMenu();
-			aMenu.main(null);
+			aMenu.setVisible(true);
+			//aMenu.main(null);
 		}
 	}
 
@@ -568,4 +589,21 @@ public class ParkingGarageGUI extends JFrame {
 
 	}
 
+	private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
+	}
 }
