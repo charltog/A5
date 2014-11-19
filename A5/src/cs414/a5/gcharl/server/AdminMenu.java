@@ -1,4 +1,4 @@
-package cs414.a5.gcharl;
+package cs414.a5.gcharl.server;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -149,7 +149,9 @@ public class AdminMenu extends JFrame {
 						gcgui.setVisible(true);
 						break;
 			case 2: 	//viewSystemLog();
-			case 3: 	//createNewEmployee();
+//			case 3: 	CreateEmployeeGUI cegui = new CreateEmployeeGUI();
+//						cegui.setVisible(true);
+//						break;
 			case 4: 	//createNewAdministrator();
 			case 5: 	//systemOverride();
 			default: 	//failure

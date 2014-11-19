@@ -1,7 +1,9 @@
-package cs414.a5.gcharl;
+package cs414.a5.gcharl.server;
 
 import java.util.Date;
 import java.util.HashSet;
+
+import cs414.a5.gcharl.common.IParkingGarage;
 
 public class Garage {
 
@@ -11,6 +13,7 @@ public class Garage {
 	private EntryGate entryGate;
 	private ExitGate exitGate;
 	private GarageDescription _garageDescription;
+	public GarageController _garageController;
 	public SystemLog systemLog;
 	public HashSet<Administrator> _administrators = new HashSet<Administrator>();
 	public HashSet<Employee> _employees = new HashSet<Employee>();

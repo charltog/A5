@@ -1,4 +1,4 @@
-package cs414.a5.gcharl;
+package cs414.a5.gcharl.server;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

@@ -1,4 +1,4 @@
-package cs414.a5.gcharl;
+package cs414.a5.gcharl.server;
 
 public class Administrator extends Employee{
 
