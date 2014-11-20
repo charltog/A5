@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import cs414.a5.gcharl.common.*;
+
 public class ExitGateTest {
 
 	@Test
@@ -27,7 +29,7 @@ public class ExitGateTest {
 			g3.increaseCurrentOccupancyByOne();				// should have 5 now
 		}
 		Ticket t3 = new Ticket(g3.getDateTime(), 3, g3);		
-		Sale s3 = g3.getExitGate().requestExit(t3);
+		Sale s3 = g3.getExitGate().requestExit(t3.getId());
 		//assertEquals(t3.isValid(), false);
 		assertTrue(g3.getExitGate().getSales().contains(s3));
 	}

@@ -1,4 +1,4 @@
-package cs414.a5.gcharl.server;
+package cs414.a5.gcharl.GUI;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -28,6 +28,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import javax.swing.ButtonGroup;
+
+import cs414.a5.gcharl.common.*;
+import cs414.a5.gcharl.server.Administrator;
+import cs414.a5.gcharl.server.GarageConfigGUI;
+
 
 public class AdminMenu extends JFrame {
 
@@ -145,7 +150,7 @@ public class AdminMenu extends JFrame {
 	protected void pressSelect(int choice) {
 		switch (choice) {
 		
-			case 1:		GarageConfigGUI gcgui = new GarageConfigGUI(_administrator._garage);
+			case 1:		GarageConfigGUI gcgui = new GarageConfigGUI(_administrator.getGarage());
 						gcgui.setVisible(true);
 						break;
 			case 2: 	//viewSystemLog();

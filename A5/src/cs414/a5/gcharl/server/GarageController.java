@@ -3,16 +3,21 @@ package cs414.a5.gcharl.server;
 import java.rmi.RemoteException;
 import java.util.Date;
 
-import cs414.a5.gcharl.common.IParkingGarage;
+import cs414.a5.gcharl.common.*;
 
-public class GarageController implements IParkingGarage {
+public class GarageController 
+						extends java.rmi.server.UnicastRemoteObject 
+						implements IParkingGarage {
 	
 	Garage garage;
 	static int curGarageId = 1;
 	
 
-	public GarageController() {
-		Garage g = new Garage(curGarageId);
+	public GarageController() 
+			throws java.rmi.RemoteException {
+		
+        super();
+        Garage g = new Garage(curGarageId);
 		curGarageId ++;			
 		this.garage = g;			
 	}
@@ -70,6 +75,35 @@ public class GarageController implements IParkingGarage {
 	@Override
 	public double getParkingRate() throws RemoteException {
 		return garage.getParkingRate();
+	}
+
+
+	@Override
+	public int pressGetTicket() throws RemoteException {
+		return garage.pressGetTicket();
+	}
+
+
+	@Override
+	public boolean pressEnterGarage() throws RemoteException {
+		boolean result = false;
+		
+		result = garage.pressEnterGarage();
+		
+		return result;
+		
+	}
+
+
+	@Override
+	public boolean updateExitTicketNum(String testString) throws RemoteException {
+		boolean result = false;
+		int ticketId = garage.getEntryGate().findTicketID(testString);
+		boolean isValid = garage.getEntryGate().findTicketByID(testString).isValid();
+		if (ticketId > 0 && isValid) {
+			result = true;
+		}
+		return result;
 	}
 
 	

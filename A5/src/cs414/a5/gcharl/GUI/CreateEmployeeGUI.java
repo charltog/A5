@@ -18,6 +18,8 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 
 //import cs414.a5.gcharl.Garage;
+import cs414.a5.gcharl.common.*;
+
 
 import java.awt.Font;
 import java.awt.event.ActionListener;

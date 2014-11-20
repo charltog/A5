@@ -40,5 +40,14 @@ public interface IParkingGarage extends java.rmi.Remote {
 	
 	public double getParkingRate()
             throws java.rmi.RemoteException;
-	
+
+	public int pressGetTicket()
+            throws java.rmi.RemoteException;
+
+	public boolean pressEnterGarage()
+			throws java.rmi.RemoteException;
+
+	public boolean updateExitTicketNum(String testString)
+			throws java.rmi.RemoteException;
+
 }

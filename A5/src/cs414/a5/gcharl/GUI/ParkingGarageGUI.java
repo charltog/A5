@@ -1,4 +1,4 @@
-package cs414.a5.gcharl.server;
+package cs414.a5.gcharl.GUI;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -20,12 +20,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextPane;
 
 //import com.sun.corba.se.impl.protocol.giopmsgheaders.MessageHandler;
-
-
-
-
-
-
 
 
 import java.awt.event.ActionListener;
@@ -51,8 +45,8 @@ import java.rmi.RemoteException;
 
 import javax.swing.JMenuItem;
 
-import cs414.a5.gcharl.common.IParkingGarage;
-import cs414.a5.gcharl.common.RMIConnectInfo;
+import cs414.a5.gcharl.common.*;
+import cs414.a5.gcharl.server.*;
 
 public class ParkingGarageGUI extends JFrame {
 
@@ -65,8 +59,9 @@ public class ParkingGarageGUI extends JFrame {
 	private FormOfPayment FOP;
 	
 	//private Garage _garage = new Garage(101);
-	private GarageController _gc; 
+	//private GarageController _gc; 
 	private static IParkingGarage _garage;
+	private static IEntryGate _entryGate;
 	
 	private String hostname = "localhost";
 	private int portnum = 8000;
@@ -103,31 +98,55 @@ public class ParkingGarageGUI extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try {
+			
+			_garage = (IParkingGarage)		
+				Naming.lookup("rmi://" + args[0] + ":" + args[1]  + "/GarageService");
+			
+//			_entryGate = (IEntryGate)		
+//					Naming.lookup("rmi://" + args[0] + ":" + args[1]  + "/GarageService");	
+			
+		} 
+		catch (MalformedURLException murle) {
+			System.out.println("MalformedURLException");
+		    System.out.println(murle);
+		} catch (RemoteException re) {
+		    System.out.println("RemoteException"); 
+		    System.out.println(re);
+		} catch (NotBoundException nbe) {
+		    System.out.println("NotBoundException");
+		    System.out.println(nbe);
+		} catch (java.lang.ArithmeticException ae) {
+		     System.out.println("java.lang.ArithmeticException");
+		     System.out.println(ae);
+		} 
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				try {
+				try {					
 					ParkingGarageGUI frame = new ParkingGarageGUI();					
 					frame.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				try {
-					_garage = (IParkingGarage)
-							Naming.lookup("rmi://" + "localhost" + ":" + "8000"  + "/CalculatorService");
-				} 
-				catch (MalformedURLException murle) {
-                     System.out.println("MalformedURLException");
-                     System.out.println(murle);
-                 } catch (RemoteException re) {
-                     System.out.println("RemoteException"); 
-                     System.out.println(re);
-                 } catch (NotBoundException nbe) {
-                     System.out.println("NotBoundException");
-                     System.out.println(nbe);
-                 } catch (java.lang.ArithmeticException ae) {
-                      System.out.println("java.lang.ArithmeticException");
-                      System.out.println(ae);
-                 }
+//				try {
+//					_garage = (IParkingGarage)
+//							Naming.lookup("rmi://" + "localhost" + ":" + "8000"  + "/CalculatorService");
+//				} 
+//				catch (MalformedURLException murle) {
+//                     System.out.println("MalformedURLException");
+//                     System.out.println(murle);
+//                 } catch (RemoteException re) {
+//                     System.out.println("RemoteException"); 
+//                     System.out.println(re);
+//                 } catch (NotBoundException nbe) {
+//                     System.out.println("NotBoundException");
+//                     System.out.println(nbe);
+//                 } catch (java.lang.ArithmeticException ae) {
+//                      System.out.println("java.lang.ArithmeticException");
+//                      System.out.println(ae);
+//                 }
 			}
 		});
 	}
@@ -558,15 +577,18 @@ public class ParkingGarageGUI extends JFrame {
 		try {
 			exitInformation.setText("");
 			String testString = exitTicketNum.getText();
-			Ticket t1 = _garage.getEntryGate().findTicketByID(testString);
-			if (t1 == null) {
+			//Ticket t1 = _garage.getEntryGate().findTicketByID(testString);
+			int ticketId = _garage.getEntryGate().findTicketID(testString);
+			boolean isValid = _garage.getEntryGate().findTicketByID(testString).isValid();
+			if (ticketId < 0) {
 				totalText.setText("Ticket not found");
-			} else if (!t1.isValid()) {
+			} else if (isValid()) {
 				totalText.setText("Invalid Ticket");
 			} else {
-				Sale s1 = _garage.getExitGate().requestExit(t1);
-				//totalText.setText("" + s1.roundedTotal + ".00");
-				String s = String.format("$ %.2f", s1.getTotal());
+				//Sale s1 = _garage.getExitGate().requestExit(t1);
+				double saleTotal = _garage.getExitGate().requestExit(ticketId).getTotal();
+
+				String s = String.format("$ %.2f", saleTotal);
 				totalText.setText(s);
 				btnMakePayment.setEnabled(true);			
 			}
@@ -578,9 +600,9 @@ public class ParkingGarageGUI extends JFrame {
 	protected void updateExitTicketNum() {
 		try {
 			String testString = exitTicketNum.getText();
-			Ticket t1 = _garage.getEntryGate().findTicketByID(testString);
-			//Sale s1 = garage.getExitGate().findSaleByTicketId(t1);
-			if (t1 != null && t1.isValid()) {
+			boolean isValidTicket = _garage.updateExitTicketNum(testString); 
+			
+			if (isValidTicket) {
 				btnGetTotal.setEnabled(true);	
 				btnExitGarage.setEnabled(true);
 			} else {
@@ -598,9 +620,12 @@ public class ParkingGarageGUI extends JFrame {
 			exitInformation.setText("");
 			entryGatePane.setText("Closed");		
 			assignedTicketNumber.setText("");
-			_garage.getEntryGate().enterGarage();
+			
+			_garage.pressEnterGarage();
+			
 			btnEnterGarage.setEnabled(false);
 			btnGetTicket.setEnabled(true);
+			
 			if (_garage.isGarageAcceptingVehicles()) {
 				vacancyPane.setText("Yes");
 			} else {
@@ -614,11 +639,11 @@ public class ParkingGarageGUI extends JFrame {
 	protected void pressGetTicket() {
 		try {
 			exitInformation.setText("");
-			Ticket t1 = _garage.getEntryGate().requestTicket();
-			if (t1 != null) {
-				assignedTicketNumber.setText(t1.toString());
+			int ticketId = _garage.pressGetTicket();
+			if (ticketId != -1) {
+				assignedTicketNumber.setText(String.valueOf(ticketId));
 				entryGatePane.setText("Open");
-				vacancyPane.setText("Yes");			
+				//vacancyPane.setText("Yes");			
 				btnEnterGarage.setEnabled(true);
 				btnGetTicket.setEnabled(false);
 			} else {

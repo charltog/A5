@@ -1,5 +1,7 @@
 package cs414.a5.gcharl.server;
 
+import cs414.a5.gcharl.common.*;
+
 public class Employee {
 
 	protected Garage _garage;
@@ -7,6 +9,10 @@ public class Employee {
 	private String password = "";
 	private boolean isSessionActive = false;
 	
+	public Garage getGarage() {
+		return _garage;
+	}
+
 	public Employee(int id, String password, Garage g1) {
 		this.Id = id;
 		this.password = password;

@@ -2,6 +2,8 @@ package cs414.a5.gcharl.server;
 
 import java.util.HashSet;
 
+import cs414.a5.gcharl.common.*;
+
 public class ExitGate {
 
 	HashSet<Sale> Sales = new HashSet<Sale>();
@@ -42,7 +44,8 @@ public class ExitGate {
 		//s1.getTicket().retire();		
 	}
 
-	public Sale requestExit(Ticket t1) {
+	public Sale requestExit(int ticketId) {
+		Ticket t1 = this.garage.getEntryGate().findTicketByID(ticketId);
 		Sale s1 = null;
 		if (!t1.isValid()) {			
 			//Ticket not valid, charge default fee and allow exit

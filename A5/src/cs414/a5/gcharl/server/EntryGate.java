@@ -1,9 +1,12 @@
 package cs414.a5.gcharl.server;
 
+
 import java.util.Date;
 import java.util.HashSet;
 
-public class EntryGate {
+import cs414.a5.gcharl.common.*;
+
+public class EntryGate implements IEntryGate {
 
 	private int Id;
 	private gateStatus status;
@@ -18,11 +21,11 @@ public class EntryGate {
 		this.status = gateStatus.Closed;
 	}
 
-	void openEntryGate() {
+	public void openEntryGate() {
 		setStatus(gateStatus.Open);
 	}
 	
-	void closeEntryGate() {
+	public void closeEntryGate() {
 		setStatus(gateStatus.Closed);		
 	}
 
@@ -50,8 +53,8 @@ public class EntryGate {
 		Ticket t1 = new Ticket();
 		Date startTime;
 		if(!this.garage.isGarageAcceptingVehicles()) {
-			//Deny Entry
-			t1 = null;
+			//Deny Entry, let t1 return as default
+			//t1 = null;
 		} else {			
 			startTime = this.garage.getDateTime();
 			t1 = new Ticket(startTime, this.ticketCount, this.garage);	
@@ -61,8 +64,9 @@ public class EntryGate {
 		return t1;		
 	}
 	
-	public void enterGarage()	{
+	public boolean enterGarage()	{
 		this.garage.increaseCurrentOccupancyByOne();
+		return true;
 	}
 	
 	public Ticket requestEntry() {
@@ -81,13 +85,34 @@ public class EntryGate {
 	}
 
 	public Ticket findTicketByID(String testString) {
-		Ticket t1 = null;
+		Ticket t1 = new Ticket();
 		for (Ticket t : garage.getEntryGate().tickets) {
 			if (t.toString().equals(testString)) {
 				t1 = t;
 			}
 		}	
 	
+		return t1;
+	}
+	
+	public int findTicketID(String testString) {
+		Ticket t1 = new Ticket();
+		for (Ticket t : garage.getEntryGate().tickets) {
+			if (t.toString().equals(testString)) {
+				t1 = t;
+			}
+		}	
+	
+		return t1.getId();
+	}
+
+	public Ticket findTicketByID(int ticketId) {
+		Ticket t1 = new Ticket();
+		for (Ticket t : garage.getEntryGate().tickets) {
+			if (t.getId() == ticketId) {
+				t1 = t;
+			}
+		}
 		return t1;
 	}
 	

@@ -1,5 +1,7 @@
 package cs414.a5.gcharl.server;
 
+import cs414.a5.gcharl.common.*;
+
 public class Administrator extends Employee{
 
 	public Administrator(int id, String password, Garage g1) {

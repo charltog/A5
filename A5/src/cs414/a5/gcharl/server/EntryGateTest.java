@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import cs414.a5.gcharl.common.*;
+
 public class EntryGateTest {
 
 	@Test

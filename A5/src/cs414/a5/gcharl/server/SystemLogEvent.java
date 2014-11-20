@@ -2,6 +2,8 @@ package cs414.a5.gcharl.server;
 
 import java.util.Date;
 
+import cs414.a5.gcharl.common.*;
+
 public class SystemLogEvent {
 	
 	private String description = "";

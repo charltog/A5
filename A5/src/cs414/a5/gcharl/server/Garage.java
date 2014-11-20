@@ -1,11 +1,12 @@
 package cs414.a5.gcharl.server;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 
-import cs414.a5.gcharl.common.IParkingGarage;
+import cs414.a5.gcharl.server.*;
 
-public class Garage {
+public class Garage implements Serializable {
 
 	private int Id = 1;
 	private int defaultAdminId = 1;
@@ -145,6 +146,31 @@ public class Garage {
 //						_garageDescription.status);
 //		return gd;
 		return _garageDescription;
+	}
+
+	public int pressGetTicket() {
+		
+		Ticket t1 = this.getEntryGate().requestTicket();
+		return t1.getId();
+		
+//		if (t1 != null) {
+		
+//			assignedTicketNumber.setText(t1.toString());
+//			entryGatePane.setText("Open");
+//			vacancyPane.setText("Yes");			
+//			btnEnterGarage.setEnabled(true);
+//			btnGetTicket.setEnabled(false);
+//		} else {
+			
+//			assignedTicketNumber.setText("Sorry, Garage is Full");
+//			entryGatePane.setText("Closed");
+			
+			//vacancyPane.setText("No");
+//		}
+	}
+	
+	public boolean pressEnterGarage() {
+		return this.entryGate.enterGarage();		
 	}
 
 //	private void displayConfig(int max, int cur, int buf, double hpr, SystemStatus ss) {
