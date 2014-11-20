@@ -50,4 +50,7 @@ public interface IParkingGarage extends java.rmi.Remote {
 	public boolean updateExitTicketNum(String testString)
 			throws java.rmi.RemoteException;
 
+	public double getSaleTotal(String testString)
+			throws java.rmi.RemoteException;
+
 }

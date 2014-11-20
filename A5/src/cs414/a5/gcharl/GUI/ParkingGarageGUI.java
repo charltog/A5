@@ -576,17 +576,18 @@ public class ParkingGarageGUI extends JFrame {
 	protected void pressGetTotal() {
 		try {
 			exitInformation.setText("");
-			String testString = exitTicketNum.getText();
+			String ticketNum = exitTicketNum.getText();
+			
 			//Ticket t1 = _garage.getEntryGate().findTicketByID(testString);
-			int ticketId = _garage.getEntryGate().findTicketID(testString);
-			boolean isValid = _garage.getEntryGate().findTicketByID(testString).isValid();
-			if (ticketId < 0) {
-				totalText.setText("Ticket not found");
-			} else if (isValid()) {
+//			int ticketId = _garage.getEntryGate().findTicketID(testString);
+//			boolean isValid = _garage.getEntryGate().findTicketByID(testString).isValid();
+			boolean isValidTicket = _garage.updateExitTicketNum(ticketNum);
+			
+			if (!isValidTicket) {
 				totalText.setText("Invalid Ticket");
 			} else {
 				//Sale s1 = _garage.getExitGate().requestExit(t1);
-				double saleTotal = _garage.getExitGate().requestExit(ticketId).getTotal();
+				double saleTotal = _garage.getSaleTotal(ticketNum);  // getExitGate().requestExit(ticketId).getTotal();
 
 				String s = String.format("$ %.2f", saleTotal);
 				totalText.setText(s);

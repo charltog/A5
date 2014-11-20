@@ -106,6 +106,19 @@ public class GarageController
 		return result;
 	}
 
+
+	@Override
+	public double getSaleTotal(String ticketNum) {
+		double result = 0;
+		Ticket t1 = garage.getEntryGate().findTicketByID(ticketNum);
+		if (t1.isValid()) {
+			Sale s1 = garage.getExitGate().requestExit(t1.getId());
+			result = s1.getTotal();
+		}
+		
+		return result;
+	}
+
 	
 
 
