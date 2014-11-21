@@ -4,8 +4,8 @@ import cs414.a5.gcharl.common.*;
 
 public class Administrator extends Employee{
 
-	public Administrator(int id, String password, Garage g1) {
-		super(id, password, g1);
+	public Administrator(String adminUserName, String password, Garage g1) {
+		super(adminUserName, password, g1);
 	}
 
 	public GarageDescription viewGarageConfig() {

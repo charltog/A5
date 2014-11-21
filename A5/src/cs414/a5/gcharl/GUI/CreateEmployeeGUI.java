@@ -30,9 +30,11 @@ public class CreateEmployeeGUI extends JFrame {
 	//private Garage _garage;
 	
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField lName;
+	private JTextField uName;
 
+	private IParkingGarage _garage;
+	private String employeePassword = "";
 	/**
 	 * Launch the application.
 	 */
@@ -52,7 +54,8 @@ public class CreateEmployeeGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public CreateEmployeeGUI() {
+	public CreateEmployeeGUI(IParkingGarage g) {
+		_garage = g;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 410, 300);
 		contentPane = new JPanel();
@@ -73,7 +76,8 @@ public class CreateEmployeeGUI extends JFrame {
 		gbc_lblCreateNewEmployee.gridy = 0;
 		contentPane.add(lblCreateNewEmployee, gbc_lblCreateNewEmployee);
 		
-		JLabel lblName = new JLabel("Name");
+		JLabel lblName = new JLabel("Legal Name");
+		lblName.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		GridBagConstraints gbc_lblName = new GridBagConstraints();
 		gbc_lblName.anchor = GridBagConstraints.EAST;
 		gbc_lblName.insets = new Insets(0, 0, 5, 5);
@@ -81,32 +85,38 @@ public class CreateEmployeeGUI extends JFrame {
 		gbc_lblName.gridy = 1;
 		contentPane.add(lblName, gbc_lblName);
 		
-		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 2;
-		gbc_textField.gridy = 1;
-		contentPane.add(textField, gbc_textField);
-		textField.setColumns(10);
+		lName = new JTextField();
+		GridBagConstraints gbc_lName = new GridBagConstraints();
+		gbc_lName.insets = new Insets(0, 0, 5, 5);
+		gbc_lName.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lName.gridx = 2;
+		gbc_lName.gridy = 1;
+		contentPane.add(lName, gbc_lName);
+		lName.setColumns(10);
 		
-		JLabel lblId = new JLabel("ID");
+		JLabel lblId = new JLabel("User Name");
+		lblId.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		GridBagConstraints gbc_lblId = new GridBagConstraints();
 		gbc_lblId.insets = new Insets(0, 0, 5, 5);
 		gbc_lblId.gridx = 1;
 		gbc_lblId.gridy = 3;
 		contentPane.add(lblId, gbc_lblId);
 		
-		textField_1 = new JTextField();
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_1.gridx = 2;
-		gbc_textField_1.gridy = 3;
-		contentPane.add(textField_1, gbc_textField_1);
-		textField_1.setColumns(10);
+		uName = new JTextField();
+		GridBagConstraints gbc_uName = new GridBagConstraints();
+		gbc_uName.insets = new Insets(0, 0, 5, 5);
+		gbc_uName.fill = GridBagConstraints.HORIZONTAL;
+		gbc_uName.gridx = 2;
+		gbc_uName.gridy = 3;
+		contentPane.add(uName, gbc_uName);
+		uName.setColumns(10);
 		
 		JButton btnCreate = new JButton("Create");
+		btnCreate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				pressCreate();
+			}
+		});
 		GridBagConstraints gbc_btnCreate = new GridBagConstraints();
 		gbc_btnCreate.insets = new Insets(0, 0, 5, 5);
 		gbc_btnCreate.gridx = 2;
@@ -126,8 +136,22 @@ public class CreateEmployeeGUI extends JFrame {
 		contentPane.add(btnCancel, gbc_btnCancel);
 	}
 
+	protected void pressCreate() {
+		try {
+			//String name = lName.getText();
+			String userName = uName.getText();
+			boolean result = _garage.createEmployee(userName, employeePassword);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	protected void pressCancel() {
-		this.dispose();
+		try {
+			this.dispose();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

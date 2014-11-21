@@ -5,7 +5,8 @@ import cs414.a5.gcharl.common.*;
 public class Employee {
 
 	protected Garage _garage;
-	private int Id = -1;
+//	private int Id = -1;
+	private String userName = "";
 	private String password = "";
 	private boolean isSessionActive = false;
 	
@@ -13,8 +14,8 @@ public class Employee {
 		return _garage;
 	}
 
-	public Employee(int id, String password, Garage g1) {
-		this.Id = id;
+	public Employee(String userName, String password, Garage g1) {
+		this.userName = userName;
 		this.password = password;
 		this._garage = g1;
 		this.isSessionActive = false;		
@@ -32,12 +33,16 @@ public class Employee {
 		this.password = password;
 	}
 
-	public int getId() {
-		return Id;
-	}
+//	public int getId() {
+//		return Id;
+//	}
 
 	public void setDone(boolean done) {
 		this.isSessionActive = done;
+	}
+
+	public String getUserName() {
+		return this.userName;
 	}
 	
 //		

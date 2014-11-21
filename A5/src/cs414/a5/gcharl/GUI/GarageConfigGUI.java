@@ -1,4 +1,4 @@
-package cs414.a5.gcharl.server;
+package cs414.a5.gcharl.GUI;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -42,7 +42,10 @@ public class GarageConfigGUI extends JFrame {
 	private JTextField displaySS;
 	private JComboBox editSS;
 	
-	private Garage _garage;
+	//private Garage _garage;
+	private String adminUserName;
+	private static IParkingGarage _garage;
+	
 
 	/**
 	 * Launch the application.
@@ -63,8 +66,9 @@ public class GarageConfigGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public GarageConfigGUI(Garage g) {
+	public GarageConfigGUI(IParkingGarage g) {
 		_garage = g;
+//		this.adminUserName = adminUserName;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 350, 370);
 		contentPane = new JPanel();
@@ -266,22 +270,34 @@ public class GarageConfigGUI extends JFrame {
 
 	protected void pressSet() {
 		try {
-			_garage.viewConfig().maxOccupancy = Integer.parseInt(editMax.getText());
-			_garage.viewConfig().currentOccupancy = Integer.parseInt(editCur.getText());
-			_garage.viewConfig().buffer = Integer.parseInt(editBuf.getText());
-			_garage.viewConfig().hourlyParkingRate = Double.parseDouble(editHpr.getText());
-			_garage.viewConfig().status = (SystemStatus)editSS.getSelectedItem();
+			boolean result = false;
+			String[] configValues = new String[5];
+			configValues[0] = editMax.getText();
+			configValues[1] = editCur.getText();
+			configValues[2] = editBuf.getText();
+			configValues[3] = editHpr.getText();
+			configValues[4] = ((SystemStatus)editSS.getSelectedItem()).toString();
+			
+			result = _garage.setConfigValues(configValues);
+			if (result) {
+				pressViewCurrent();
+			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 	}
 
 	protected void pressViewCurrent() {
-		displayMax.setText("" + _garage.viewConfig().maxOccupancy);
-		displayCur.setText("" + _garage.viewConfig().currentOccupancy);
-		displayBuf.setText("" + _garage.viewConfig().buffer);
-		displayHpr.setText("" + _garage.viewConfig().hourlyParkingRate);
-		displaySS.setText(_garage.viewConfig().status.toString());
+		try {
+			String[] displayValues = _garage.getConfigValues();
+			displayMax.setText(displayValues[0]); 	
+			displayCur.setText(displayValues[1]); 	
+			displayBuf.setText(displayValues[2]); 		
+			displayHpr.setText(displayValues[3]); 			
+			displaySS.setText(displayValues[4]); 				
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 }

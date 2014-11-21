@@ -38,7 +38,7 @@ public class ExitGate {
 		this.status = status;
 	}
 	
-	public void exitGarage(Sale s1)	{
+	public void exitGarage(String ticketNum)	{
 		this.garage.decreaseCurrentOccupancyByOne();
 		this.closeExitGate();
 		//s1.getTicket().retire();		
@@ -102,23 +102,33 @@ public class ExitGate {
 		return s1;
 	}
 
-	public boolean makePayment(Sale s1, double payAmt, FormOfPayment FOP) {
+	public double makePayment(Sale s1, double payAmt, int fopCode) {
 		boolean result = false;
+		double changeAmt = 0.0;
 		this.closeExitGate();
+		FormOfPayment FOP = FormOfPayment.None;
+		switch (fopCode) {
+		case 1: 	FOP = FormOfPayment.Cash;
+					break;
+					
+		case 2: 	FOP = FormOfPayment.CreditCard;
+					break;
+		
+		}
 		if (FOP==FormOfPayment.Cash || FOP == FormOfPayment.CreditCard) {
 			if (this.Sales.contains(s1)) {
 				double newTotal = s1.getTotal() - payAmt;
-				if (newTotal <= 0.01) {
+				if (newTotal <= 0.00) {
 					s1.getTicket().retire();
 					this.openExitGate();
-					s1.setChange(-1*newTotal);
+					s1.setChange(Math.abs(newTotal));
 				}
 				s1.setTotal((double)newTotal);			
 				//s1.calculateTotal();
-				result = true;				
+				changeAmt = s1.getChange();				
 			}			
 		}		
-		return result;
+		return changeAmt;
 	}
 
 

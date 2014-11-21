@@ -4,13 +4,15 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 
+import cs414.a5.gcharl.common.*;
 import cs414.a5.gcharl.server.*;
 
 public class Garage implements Serializable {
 
 	private int Id = 1;
-	private int defaultAdminId = 1;
-	private String defaultAdminPassword = "foo";
+	private String defaultAdminUserName = "foo";
+	private String defaultAdminPassword = "bar";
+	private String employeePassword = "";
 	private EntryGate entryGate;
 	private ExitGate exitGate;
 	private GarageDescription _garageDescription;
@@ -26,34 +28,34 @@ public class Garage implements Serializable {
 		exitGate = createExitGate();
 		_garageDescription = new GarageDescription();
 		
-		Administrator a = createAdministrator(defaultAdminId, defaultAdminPassword, this);
+		Administrator a = createAdministrator(defaultAdminUserName, defaultAdminPassword, this);
 		_administrators.add(a);
 		
 	}
 
-	public Administrator createAdministrator(int adminId, String adminPassword, Garage g1) {
-		Administrator a1 = findAdminById(adminId);
-		if ((a1 == null) && (adminId > 0)) {
-			a1 = new Administrator(adminId, adminPassword, g1);	
+	public Administrator createAdministrator(String adminUserName, String adminPassword, Garage g1) {
+		Administrator a1 = findAdminByUserName(adminUserName);
+		if ((a1 == null)) {
+			a1 = new Administrator(adminUserName, adminPassword, g1);	
 			_administrators.add(a1);
 		}
 		return a1;
 	}
 	
 	
-	public boolean administratorLogin(int id, String password) {
+	public boolean administratorLogin(String adminUserName, String password) {
 		boolean result = false;
-		Administrator a = this.findAdminById(id);
+		Administrator a = this.findAdminByUserName(adminUserName);
 		if (a != null && a.getPassword().equals(password)) {
 			result = true;
 		}
 		return result;
 	}
 	
-	public Administrator findAdminById(int Id) {
+	public Administrator findAdminByUserName(String adminUserName) {
 		Administrator a = null;
 		for (Administrator a1 : _administrators) {
-			if (a1.getId() == Id) {
+			if (a1.getUserName().equals(adminUserName)) {
 				a = a1;
 			}
 		}
@@ -173,6 +175,79 @@ public class Garage implements Serializable {
 		return this.entryGate.enterGarage();		
 	}
 
+	public double makePayment(String ticketNum, double payAmt, int fopCode) {
+//		return this.getExitGate()
+//		boolean result = false;
+		
+		Ticket t1 = this.getEntryGate().findTicketByID(ticketNum);
+		Sale s1 = this.getExitGate().findSaleByTicketId(t1);
+		return this.exitGate.makePayment(s1, payAmt, fopCode);
+		
+		
+//		return result;
+	}
+
+	public String getExitGateStatus() {
+		return this.getExitGate().getStatus().toString();
+	}
+//
+//	public boolean updateExitTicketNum(String testString) {
+//		boolean result = false;
+//		int ticketId = this.getEntryGate().findTicketID(testString);
+//		boolean isValid = this.getEntryGate().findTicketByID(testString).isValid();
+//		if (ticketId > 0 && isValid) {
+//			result = true;
+//		}
+//		return result;
+//	}
+
+	public boolean isValidTicket(String ticketNum) {
+		boolean result = false;
+		int ticketId = this.getEntryGate().findTicketID(ticketNum);
+		boolean isValid = this.getEntryGate().findTicketByID(ticketNum).isValid();
+		if (ticketId > 0 && isValid) {
+			result = true;
+		}
+		return result;
+	}
+
+	public void exitGarage(String ticketNum) {
+		this.getExitGate().exitGarage(ticketNum);
+	}
+
+	public String[] getConfigValues() {
+		return this._garageDescription.getConfigValues();
+	}
+
+	public boolean setConfigValues(String[] configValues) {
+		return this._garageDescription.setConfig(configValues);
+	}
+
+	public boolean createEmployee(String userName, String password) {
+		boolean result = false;
+		Employee e1 = findEmployeeByUserName(userName);
+		if ((e1 == null)) {
+			e1 = new Employee(userName, employeePassword, this);	
+			_employees.add(e1);
+			result = true;
+		} else {
+			// employee name already exists
+		}
+		return result;
+	}
+
+	public Employee findEmployeeByUserName(String userName) {
+		boolean result = false;
+		Employee e = null;
+		for (Employee e1 : _employees) {
+			if (e1.getUserName().equals(userName)) {
+				e = e1;
+				result = true;
+			}
+		}
+		return e;
+	}
+	
 //	private void displayConfig(int max, int cur, int buf, double hpr, SystemStatus ss) {
 //		GarageConfigGUI gcgui = new GarageConfigGUI(this);
 //		

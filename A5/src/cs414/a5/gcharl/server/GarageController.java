@@ -24,22 +24,22 @@ public class GarageController
 
 
 	@Override
-	public Administrator createAdministrator(int adminId, String adminPassword,
+	public Administrator createAdministrator(String adminUserName, String adminPassword,
 			Garage g1) throws RemoteException {
 
-		return garage.createAdministrator(adminId, adminPassword, g1);
+		return garage.createAdministrator(adminUserName, adminPassword, g1);
 	}
 
 	@Override
-	public boolean administratorLogin(int id, String password)
+	public boolean administratorLogin(String adminUserName, String password)
 			throws RemoteException {
 		
-		return garage.administratorLogin(id, password);
+		return garage.administratorLogin(adminUserName, password);
 	}
 
 	@Override
-	public Administrator findAdminById(int Id) throws RemoteException {
-		return garage.findAdminById(Id);
+	public Administrator findAdminByUserName(String adminUserName) throws RemoteException {
+		return garage.findAdminByUserName(adminUserName);
 	}
 
 	@Override
@@ -86,25 +86,15 @@ public class GarageController
 
 	@Override
 	public boolean pressEnterGarage() throws RemoteException {
-		boolean result = false;
-		
-		result = garage.pressEnterGarage();
-		
-		return result;
+		return garage.pressEnterGarage();
 		
 	}
 
 
-	@Override
-	public boolean updateExitTicketNum(String testString) throws RemoteException {
-		boolean result = false;
-		int ticketId = garage.getEntryGate().findTicketID(testString);
-		boolean isValid = garage.getEntryGate().findTicketByID(testString).isValid();
-		if (ticketId > 0 && isValid) {
-			result = true;
-		}
-		return result;
-	}
+//	@Override
+//	public boolean updateExitTicketNum(String testString) throws RemoteException {
+//		return garage.updateExitTicketNum(testString);
+//	}
 
 
 	@Override
@@ -119,7 +109,50 @@ public class GarageController
 		return result;
 	}
 
-	
+
+	@Override
+	public double makePayment(String ticketNum, double payAmt, int fopCode)
+			throws RemoteException {
+		return garage.makePayment(ticketNum, payAmt, fopCode);
+	}
+
+
+	@Override
+	public String getExitGateStatus() throws RemoteException {
+		return garage.getExitGateStatus();
+	}
+
+
+	@Override
+	public boolean isValidTicket(String ticketNum) throws RemoteException {
+		return garage.isValidTicket(ticketNum);
+	}
+
+
+	@Override
+	public void exitGarage(String ticketNum) throws RemoteException {
+		garage.exitGarage(ticketNum);
+	}
+
+
+	@Override
+	public String[] getConfigValues() throws RemoteException {
+		return garage.getConfigValues();
+	}
+
+
+	@Override
+	public boolean setConfigValues(String[] configValues) throws RemoteException {
+		return garage.setConfigValues(configValues);
+	}
+
+
+	@Override
+	public boolean createEmployee(String userName, String password)
+			throws RemoteException {
+		return garage.createEmployee(userName, password);
+	}
+
 
 
 }

@@ -30,14 +30,14 @@ import java.awt.event.ActionEvent;
 import javax.swing.ButtonGroup;
 
 import cs414.a5.gcharl.common.*;
-import cs414.a5.gcharl.server.Administrator;
-import cs414.a5.gcharl.server.GarageConfigGUI;
 
 
 public class AdminMenu extends JFrame {
 
 	private JPanel contentPane;
-	private Administrator _administrator;
+//	private Administrator _administrator;
+	private static IParkingGarage _garage;
+	private String adminUserName = "";
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 
 	/**
@@ -60,8 +60,10 @@ public class AdminMenu extends JFrame {
 	 * Create the frame.
 	 * @param _administrator 
 	 */
-	public AdminMenu(Administrator administrator) {
-		_administrator = administrator;
+	public AdminMenu(IParkingGarage _garage) {
+		this._garage = _garage;
+//		this.adminUserName = adminUserName;
+//		_administrator = administrator;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 368, 472);
 		contentPane = new JPanel();
@@ -150,13 +152,14 @@ public class AdminMenu extends JFrame {
 	protected void pressSelect(int choice) {
 		switch (choice) {
 		
-			case 1:		GarageConfigGUI gcgui = new GarageConfigGUI(_administrator.getGarage());
+			case 1:		GarageConfigGUI gcgui = new GarageConfigGUI(_garage);
 						gcgui.setVisible(true);
 						break;
 			case 2: 	//viewSystemLog();
-//			case 3: 	CreateEmployeeGUI cegui = new CreateEmployeeGUI();
-//						cegui.setVisible(true);
-//						break;
+						break;
+			case 3: 	CreateEmployeeGUI cegui = new CreateEmployeeGUI(_garage);
+						cegui.setVisible(true);
+						break;
 			case 4: 	//createNewAdministrator();
 			case 5: 	//systemOverride();
 			default: 	//failure
@@ -166,7 +169,7 @@ public class AdminMenu extends JFrame {
 	}
 
 	protected void pressAdminLogout() {
-		_administrator.setDone(false);
+		this.dispose();
 		
 	}
 

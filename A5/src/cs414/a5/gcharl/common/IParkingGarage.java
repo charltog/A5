@@ -11,13 +11,13 @@ import cs414.a5.gcharl.server.SystemLog;
 
 public interface IParkingGarage extends java.rmi.Remote {
 	
-	public Administrator createAdministrator(int adminId, String adminPassword, Garage g1)
+	public Administrator createAdministrator(String adminUserName, String adminPassword, Garage g1)
                 throws java.rmi.RemoteException;
 
-	public boolean administratorLogin(int id, String password)
+	public boolean administratorLogin(String adminUserName, String password)
                 throws java.rmi.RemoteException;
 	
-	public Administrator findAdminById(int Id)
+	public Administrator findAdminByUserName(String adminUserName)
             throws java.rmi.RemoteException;
 	
 	public SystemLog getSystemLog()
@@ -47,10 +47,32 @@ public interface IParkingGarage extends java.rmi.Remote {
 	public boolean pressEnterGarage()
 			throws java.rmi.RemoteException;
 
-	public boolean updateExitTicketNum(String testString)
-			throws java.rmi.RemoteException;
+//	public boolean updateExitTicketNum(String testString)
+//			throws java.rmi.RemoteException;
 
 	public double getSaleTotal(String testString)
 			throws java.rmi.RemoteException;
+
+	public double makePayment(String ticketNum, double payAmt, int fopCode)
+			throws java.rmi.RemoteException;
+
+	public String getExitGateStatus()
+			throws java.rmi.RemoteException;
+
+	public boolean isValidTicket(String ticketNum)
+			throws java.rmi.RemoteException;
+
+	public void exitGarage(String ticketNum)
+			throws java.rmi.RemoteException;
+
+	public String[] getConfigValues()
+			throws java.rmi.RemoteException;
+
+	public boolean setConfigValues(String[] configValues)
+			throws java.rmi.RemoteException;
+
+	public boolean createEmployee(String userName, String password)
+			throws java.rmi.RemoteException;
+	
 
 }

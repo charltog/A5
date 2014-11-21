@@ -2,6 +2,8 @@ package cs414.a5.gcharl.server;
 
 import java.io.IOException;
 
+import cs414.a5.gcharl.common.SystemStatus;
+
 
 public class GarageDescription {
 	
@@ -24,14 +26,36 @@ public class GarageDescription {
 		}		
 	}
 	
-	public boolean setConfig(int max, int cur, int buf, double hpr, SystemStatus ss) {
+	public boolean setConfig(String[] configValues) { 
+		
 		boolean result = false;
 		try {
-			this.maxOccupancy = max;
-			this.buffer = buf;
-			this.hourlyParkingRate = hpr;
-			this.currentOccupancy = cur;
-			this.status = ss;
+			try {
+				this.maxOccupancy = Integer.parseInt(configValues[0]);
+			} catch (NumberFormatException e) {
+				// Blank or non-integer value, do nothing
+			}
+			try {
+				this.currentOccupancy = Integer.parseInt(configValues[1]);
+			} catch (NumberFormatException e) {
+				// Blank or non-integer value, do nothing
+			}
+			try {
+				this.buffer = Integer.parseInt(configValues[2]);
+			} catch (NumberFormatException e) {
+				// Blank or non-integer value, do nothing
+				
+			}
+			try {
+				this.hourlyParkingRate = Double.parseDouble(configValues[3]);
+			} catch (NumberFormatException e) {
+				// Blank or non-double value, do nothing
+			}
+			try {
+				this.status = SystemStatus.valueOf(configValues[4]);
+			} catch (Exception e) {
+				// Blank or invalid value, do nothing
+			}
 			result = true;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -49,6 +73,18 @@ public class GarageDescription {
 
 	public void decreaseCurrentOccupancyByOne() {
 		currentOccupancy--;
+	}
+
+	public String[] getConfigValues() {
+		String[] configValues = new String[5];
+		
+		configValues[0] = "" + this.maxOccupancy;
+		configValues[1] = "" + this.currentOccupancy;
+		configValues[2] = "" + this.buffer;
+		configValues[3]	= String.format("$ %.2f", this.hourlyParkingRate);
+		configValues[4] = "" + this.status.toString();		
+		
+		return configValues;
 	}
 
 }
