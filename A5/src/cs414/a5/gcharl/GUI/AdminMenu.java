@@ -96,9 +96,9 @@ public class AdminMenu extends JFrame {
 		buttonGroup.add(rdbtnmntmVieweditGarageSettings);
 		panel.add(rdbtnmntmVieweditGarageSettings);
 		
-		final JRadioButtonMenuItem rdbtnmntmViewSystemLog = new JRadioButtonMenuItem("View System Log");
-		buttonGroup.add(rdbtnmntmViewSystemLog);
-		panel.add(rdbtnmntmViewSystemLog);
+		final JRadioButtonMenuItem rdbtnmntmViewReports = new JRadioButtonMenuItem("View System Reports");
+		buttonGroup.add(rdbtnmntmViewReports);
+		panel.add(rdbtnmntmViewReports);
 		
 		final JRadioButtonMenuItem rdbtnmntmCreateNewEmployee = new JRadioButtonMenuItem("Create New Employee");
 		buttonGroup.add(rdbtnmntmCreateNewEmployee);
@@ -108,24 +108,20 @@ public class AdminMenu extends JFrame {
 		buttonGroup.add(rdbtnmntmCreateNewAdministrator);
 		panel.add(rdbtnmntmCreateNewAdministrator);
 		
-		final JRadioButtonMenuItem rdbtnmntmSystemOverride = new JRadioButtonMenuItem("System Override");
-		buttonGroup.add(rdbtnmntmSystemOverride);
-		panel.add(rdbtnmntmSystemOverride);
-		
 		JButton btnSelect = new JButton("Select");
 		btnSelect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int choice = 0;
 				if (rdbtnmntmVieweditGarageSettings.isSelected()) {
 					choice = 1;
-				} else if (rdbtnmntmViewSystemLog.isSelected()) {
+				} else if (rdbtnmntmViewReports.isSelected()) {
 					choice = 2;
 				} else if (rdbtnmntmCreateNewEmployee.isSelected()) {
 					choice = 3;
 				} else if (rdbtnmntmCreateNewAdministrator.isSelected()) {
 					choice = 4;
-				} else if (rdbtnmntmSystemOverride.isSelected()) {
-					choice = 5;
+//				} else if (rdbtnmntmSystemOverride.isSelected()) {
+//					choice = 5;
 				}
 				pressSelect(choice);
 			}
@@ -155,13 +151,16 @@ public class AdminMenu extends JFrame {
 			case 1:		GarageConfigGUI gcgui = new GarageConfigGUI(_garage);
 						gcgui.setVisible(true);
 						break;
-			case 2: 	//viewSystemLog();
+			case 2: 	ViewReportsGUI vrgui = new ViewReportsGUI(_garage);
+						vrgui.setVisible(true);
 						break;
 			case 3: 	CreateEmployeeGUI cegui = new CreateEmployeeGUI(_garage);
 						cegui.setVisible(true);
 						break;
-			case 4: 	//createNewAdministrator();
-			case 5: 	//systemOverride();
+			case 4: 	CreateAdminGUI cagui = new CreateAdminGUI(_garage);
+						cagui.setVisible(true);
+						break;
+//			case 5: 	//systemOverride();
 			default: 	//failure
 						break;
 			

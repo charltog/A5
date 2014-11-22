@@ -3,9 +3,11 @@ package cs414.a5.gcharl.server;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.logging.Logger;
 
 import cs414.a5.gcharl.common.*;
 import cs414.a5.gcharl.server.*;
+
 
 public class Garage implements Serializable {
 
@@ -17,7 +19,11 @@ public class Garage implements Serializable {
 	private ExitGate exitGate;
 	private GarageDescription _garageDescription;
 	public GarageController _garageController;
+	
 	public SystemLog systemLog;
+	public Logger logger = Logger.getLogger(Garage.class.getName());
+//	private Logger LOGGER = new Logger.getLogger();
+	
 	public HashSet<Administrator> _administrators = new HashSet<Administrator>();
 	public HashSet<Employee> _employees = new HashSet<Employee>();
 	
@@ -28,18 +34,19 @@ public class Garage implements Serializable {
 		exitGate = createExitGate();
 		_garageDescription = new GarageDescription();
 		
-		Administrator a = createAdministrator(defaultAdminUserName, defaultAdminPassword, this);
-		_administrators.add(a);
+		this.createAdministrator(defaultAdminUserName, defaultAdminPassword);
 		
 	}
 
-	public Administrator createAdministrator(String adminUserName, String adminPassword, Garage g1) {
+	public boolean createAdministrator(String adminUserName, String adminPassword) {
+		boolean result = false;
 		Administrator a1 = findAdminByUserName(adminUserName);
 		if ((a1 == null)) {
-			a1 = new Administrator(adminUserName, adminPassword, g1);	
+			a1 = new Administrator(adminUserName, adminPassword, this);	
 			_administrators.add(a1);
+			result = true;
 		}
-		return a1;
+		return result;
 	}
 	
 	
@@ -86,7 +93,7 @@ public class Garage implements Serializable {
 	private EntryGate createEntryGate(int id) {
 		int initialTicketCount = 1;
 		SystemLogEvent event = new SystemLogEvent(this, "Entry Gate Created", EntryGate.class.getName(), this.getDateTime());
-		systemLog.addLogEvent(event);		
+		systemLog.addLogEvent(event);
 		return new EntryGate(id, initialTicketCount, this);
 	}
 
@@ -246,6 +253,14 @@ public class Garage implements Serializable {
 			}
 		}
 		return e;
+	}
+
+	public String[] getSystemActivity() {
+		return this.systemLog.getAllActivity();
+	}
+
+	public String[] getHourlySystemActivity() {
+		return this.systemLog.getHourlyActivity();
 	}
 	
 //	private void displayConfig(int max, int cur, int buf, double hpr, SystemStatus ss) {

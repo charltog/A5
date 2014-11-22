@@ -11,7 +11,7 @@ import cs414.a5.gcharl.server.SystemLog;
 
 public interface IParkingGarage extends java.rmi.Remote {
 	
-	public Administrator createAdministrator(String adminUserName, String adminPassword, Garage g1)
+	public boolean createAdministrator(String adminUserName, String adminPassword)
                 throws java.rmi.RemoteException;
 
 	public boolean administratorLogin(String adminUserName, String password)
@@ -72,6 +72,12 @@ public interface IParkingGarage extends java.rmi.Remote {
 			throws java.rmi.RemoteException;
 
 	public boolean createEmployee(String userName, String password)
+			throws java.rmi.RemoteException;
+
+	public String[] getSystemActivity()
+			throws java.rmi.RemoteException;
+
+	public String[] getHourlySystemActivity()
 			throws java.rmi.RemoteException;
 	
 

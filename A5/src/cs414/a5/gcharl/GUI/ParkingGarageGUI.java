@@ -285,7 +285,7 @@ public class ParkingGarageGUI extends JFrame {
 		gbc_lblAdministratorLogin.gridy = 4;
 		contentPane.add(lblAdministratorLogin, gbc_lblAdministratorLogin);
 		
-		JLabel lblNewLabel_2 = new JLabel("ID:");
+		JLabel lblNewLabel_2 = new JLabel("User Name:");
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
 		gbc_lblNewLabel_2.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);

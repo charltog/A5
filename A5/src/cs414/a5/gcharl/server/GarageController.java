@@ -24,10 +24,8 @@ public class GarageController
 
 
 	@Override
-	public Administrator createAdministrator(String adminUserName, String adminPassword,
-			Garage g1) throws RemoteException {
-
-		return garage.createAdministrator(adminUserName, adminPassword, g1);
+	public boolean createAdministrator(String adminUserName, String adminPassword) throws RemoteException {
+		return garage.createAdministrator(adminUserName, adminPassword);
 	}
 
 	@Override
@@ -151,6 +149,18 @@ public class GarageController
 	public boolean createEmployee(String userName, String password)
 			throws RemoteException {
 		return garage.createEmployee(userName, password);
+	}
+
+
+	@Override
+	public String[] getSystemActivity() throws RemoteException {
+		return garage.getSystemActivity();
+	}
+
+
+	@Override
+	public String[] getHourlySystemActivity() throws RemoteException {
+		return garage.getHourlySystemActivity();
 	}
 
 

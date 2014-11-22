@@ -30,11 +30,11 @@ public class CreateEmployeeGUI extends JFrame {
 	//private Garage _garage;
 	
 	private JPanel contentPane;
-	private JTextField lName;
 	private JTextField uName;
 
 	private IParkingGarage _garage;
 	private String employeePassword = "";
+	private JTextField createInfo;
 	/**
 	 * Launch the application.
 	 */
@@ -76,24 +76,6 @@ public class CreateEmployeeGUI extends JFrame {
 		gbc_lblCreateNewEmployee.gridy = 0;
 		contentPane.add(lblCreateNewEmployee, gbc_lblCreateNewEmployee);
 		
-		JLabel lblName = new JLabel("Legal Name");
-		lblName.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		GridBagConstraints gbc_lblName = new GridBagConstraints();
-		gbc_lblName.anchor = GridBagConstraints.EAST;
-		gbc_lblName.insets = new Insets(0, 0, 5, 5);
-		gbc_lblName.gridx = 1;
-		gbc_lblName.gridy = 1;
-		contentPane.add(lblName, gbc_lblName);
-		
-		lName = new JTextField();
-		GridBagConstraints gbc_lName = new GridBagConstraints();
-		gbc_lName.insets = new Insets(0, 0, 5, 5);
-		gbc_lName.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lName.gridx = 2;
-		gbc_lName.gridy = 1;
-		contentPane.add(lName, gbc_lName);
-		lName.setColumns(10);
-		
 		JLabel lblId = new JLabel("User Name");
 		lblId.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		GridBagConstraints gbc_lblId = new GridBagConstraints();
@@ -117,6 +99,18 @@ public class CreateEmployeeGUI extends JFrame {
 				pressCreate();
 			}
 		});
+		
+		createInfo = new JTextField();
+		createInfo.setFont(new Font("Courier New", Font.PLAIN, 14));
+		createInfo.setEditable(false);
+		GridBagConstraints gbc_createInfo = new GridBagConstraints();
+		gbc_createInfo.gridwidth = 4;
+		gbc_createInfo.insets = new Insets(0, 0, 5, 5);
+		gbc_createInfo.fill = GridBagConstraints.HORIZONTAL;
+		gbc_createInfo.gridx = 0;
+		gbc_createInfo.gridy = 5;
+		contentPane.add(createInfo, gbc_createInfo);
+		createInfo.setColumns(10);
 		GridBagConstraints gbc_btnCreate = new GridBagConstraints();
 		gbc_btnCreate.insets = new Insets(0, 0, 5, 5);
 		gbc_btnCreate.gridx = 2;
@@ -138,9 +132,14 @@ public class CreateEmployeeGUI extends JFrame {
 
 	protected void pressCreate() {
 		try {
-			//String name = lName.getText();
 			String userName = uName.getText();
 			boolean result = _garage.createEmployee(userName, employeePassword);
+			if (result) {
+				createInfo.setText("Created " + userName + " Successfully!");
+				uName.setText("");
+			} else {
+				createInfo.setText("Employee " + userName + "Already Exists");				
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

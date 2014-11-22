@@ -54,9 +54,9 @@ public class Sale {
 	
 	private double calculateTotal(Date entryTime, Date exitTime, double parkingRate) {
 		double timeParked = exitTime.getTime() - entryTime.getTime();
-		double subtotal = (timeParked/3600000)*parkingRate - this.amtPaid;
-		if (this.ticket.isValid()) {	
-			subtotal = Math.ceil(subtotal);			
+		timeParked = Math.ceil(timeParked/3600000);
+		double subtotal = timeParked*parkingRate - this.amtPaid;
+		if (this.ticket.isValid()) {			
 			this.roundedTotal = (int)subtotal;
 		} else {
 			subtotal = 0.00;
